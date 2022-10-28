@@ -1,0 +1,15 @@
+{
+    "Name": "fvnkhead.NetLib",
+    "Description": "IP address utility functions for Northstar server modders",
+    "Version": "0.1.0",
+    "LoadPriority": 0,
+    "Scripts": [
+        {
+            "Path": "netlib.nut",
+            "RunOn": "SERVER",
+            "ServerCallback": {
+                "After": "NL_Init"
+            }
+        }
+    ]
+}
