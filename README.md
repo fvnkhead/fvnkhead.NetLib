@@ -8,7 +8,8 @@ gives you a string like:
 
 which is not ideal.
 
-Either copy the code from `mod/scripts/vscripts/netlib.nut` or include this mod directly.
+Either copy the code from [netlib.nut](mod/scripts/vscripts/netlib.nut)
+or include this mod directly.
 
 With:
 
@@ -45,7 +46,7 @@ Returns the player's network as a string, with the `cidr` value denoting the siz
 subnet. Eg. with `cidr=24`, both `1.2.3.50` and `1.2.3.100` would result into
 `1.2.3.0`, because that matches 256 hosts. See [this](https://www.connecteddots.online/resources/blog/subnet-masks-table) for more information.
 
-Recommended value for kicking/banning people is around 16-24.
+Recommended CIDR value for kicking/banning people is around 18-24. With 16, you'll match 65,536 hosts, which can start affecting normal players.
 
 #### `int function NL_GetPlayerIPv4NetworkInt(entity player, int cidr)`
 
