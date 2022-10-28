@@ -8,7 +8,8 @@ gives you a string like:
 
 which is not ideal.
 
-Either copy the code from `mod/scripts/vscripts/netlib.nut` or include this mod directly.
+Either copy the code from [netlib.nut](mod/scripts/vscripts/netlib.nut)
+or include this mod directly.
 
 With:
 
@@ -24,7 +25,35 @@ which forces them to switch networks and thus making consecutive cheating more
 frustrating.
 
 If you include this mod, it also prints a player's name, UID and IP address
-at every client connect.
+at every client connect, like this:
+
+```
+[04:05:12] [info] [SERVER SCRIPT] [fvnkhead.NetLib] client connected: 'foobar'/001231045/1.2.3.4
+```
+
+Mod integration
+--------------------------------------------------------------------------------
+
+Add a [dependency constant](https://r2northstar.readthedocs.io/en/latest/reference/northstar/dependencyconstants.html)
+in your mod's `mod.json`, eg.:
+
+```
+"Dependencies": {
+    "NETLIB": "fvnkhead.NetLib"
+}
+```
+
+Then in your code, use you can use conditional compilation like this:
+
+```
+   string playerId = player.GetUID()
+#if NETLIB
+   playerId = NL_GetPlayerIPv4NetworkString(player, 20)
+   KickPlayersByNetwork(playerId)
+   return
+#endif
+   KickPlayerByUID(playerId)
+```
 
 Reference
 --------------------------------------------------------------------------------
@@ -45,7 +74,7 @@ Returns the player's network as a string, with the `cidr` value denoting the siz
 subnet. Eg. with `cidr=24`, both `1.2.3.50` and `1.2.3.100` would result into
 `1.2.3.0`, because that matches 256 hosts. See [this](https://www.connecteddots.online/resources/blog/subnet-masks-table) for more information.
 
-Recommended value for kicking/banning people is around 16-24.
+Recommended CIDR value for kicking/banning people is around 18-24. With 16, you'll match 65,536 hosts, which can start affecting normal players.
 
 #### `int function NL_GetPlayerIPv4NetworkInt(entity player, int cidr)`
 
@@ -63,7 +92,7 @@ Example: `'PubStomper69'/900192228/1.2.3.4`
 
 Converts an IPv4 string into an integer.
 
-#### `int function NL_IPv4IntToString(int addrInt)`
+#### `string function NL_IPv4IntToString(int addrInt)`
 
 Converts an IPv4 integer to a string.
 
